@@ -22,7 +22,7 @@ void setup() {
   setupESC(&drone);
   setupLED(&drone);
   setupRC();
-  setupIMU();
+  setupIMU(&drone);
 
   // Stato iniziale: completato setup
   drone.STATUS.isStarting = false;

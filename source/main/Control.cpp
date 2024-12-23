@@ -1,4 +1,7 @@
 #include "Control.h"
+#include "Config.h"
+#include "Utils.h"
+#include "Debug.h"
 
 // Definizioni dei PID per Roll, Pitch e Yaw
 const pid PID_VALUE_ROLL = {
@@ -84,6 +87,31 @@ void PID(Drone *drone) {
     drone->ESC_OUTPUT.BKR = IO_MIN;
     return;
   }
+
+  // Stampa i valori
+  #if PID_DEBUG
+    // Valori calcolati per PID Roll (P, I, D)
+    DEBUG_PRINT("PID Debug - Roll P: ");
+    DEBUG_PRINTLN(PID_OFFSET_ROLL.P);
+    DEBUG_PRINT("PID Debug - Roll I: ");
+    DEBUG_PRINTLN(PID_OFFSET_ROLL.I);
+    DEBUG_PRINT("PID Debug - Roll D: ");
+    DEBUG_PRINTLN(PID_OFFSET_ROLL.D);
+
+    // Valori calcolati per PID Pitch (P, I, D)
+    DEBUG_PRINT("PID Debug - Pitch P: ");
+    DEBUG_PRINTLN(PID_OFFSET_PITCH.P);
+    DEBUG_PRINT("PID Debug - Pitch I: ");
+    DEBUG_PRINTLN(PID_OFFSET_PITCH.I);
+    DEBUG_PRINT("PID Debug - Pitch D: ");
+    DEBUG_PRINTLN(PID_OFFSET_PITCH.D);
+
+    // Offset finali per i motori
+    DEBUG_PRINT("PID Debug - ESC Roll Offset: ");
+    DEBUG_PRINTLN(ESC_OFFSET.ROL);
+    DEBUG_PRINT("PID Debug - ESC Pitch Offset: ");
+    DEBUG_PRINTLN(ESC_OFFSET.PIT);
+  #endif
 
   // Memorizza le differenze per l'uso futuro nel calcolo PID
   LAST_DIFF_INPUT.ROL = DIFF_INPUT.ROL;

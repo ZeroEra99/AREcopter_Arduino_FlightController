@@ -17,6 +17,9 @@ struct IMUInput {
   float ROL;  // Roll
   float PIT;  // Pitch
   float HEAD; // Heading/Yaw
+  float ROL_offset; // Offset Roll
+  float PIT_offset; // Offset Pitch
+  float HEAD_offset; // Offset Heading
 };
 
 // Struttura per i segnali inviati alle ESC
@@ -52,7 +55,7 @@ enum FailSafe {
 // Struttura per lo stato del drone
 struct DroneStatus {
   bool isArmed;      // Stato armato/disarmato
-  bool isStarting;  
+  bool isStarting;   // Stato setup
   FailSafe FAILSAFE; // Stato failsafe attivo
 };
 

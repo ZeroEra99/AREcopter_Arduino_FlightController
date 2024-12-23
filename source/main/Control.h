@@ -1,8 +1,6 @@
 #ifndef CONTROL_H
 #define CONTROL_H
 
-#include "Config.h"
-#include "Utils.h"
 #include "drone.h"
 
 // Definizioni delle costanti

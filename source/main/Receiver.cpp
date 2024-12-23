@@ -1,5 +1,7 @@
 #include "Receiver.h"
-#include "Config.h"  // Include i parametri di configurazione (pin, costanti)
+#include "Config.h"
+#include "Debug.h"
+#include "Utils.h"
 
 // Implementazione di setupRC
 void setupRC() {
@@ -60,15 +62,15 @@ void readRC(Drone *drone) {
     drone->RC_INPUT.PIT *= MAX_RC_INPUT_PITCH / hypot(drone->RC_INPUT.ROL, drone->RC_INPUT.PIT);
   }
 
-  // Logging per debugging
-  Serial.print("\n  RC ROLL -> ");
-  Serial.print(drone->RC_INPUT.ROL);
-  Serial.print("  RC PITCH -> ");
-  Serial.print(drone->RC_INPUT.PIT);
-  Serial.print("  RC HEAD -> ");
-  Serial.print(drone->RC_INPUT.HEAD);
-  Serial.print("  RC THROTTLE -> ");
-  Serial.print(drone->RC_INPUT.THR);
+  // Stampa i valori
+  #if RC_DEBUG
+    DEBUG_PRINT("\nInput Roll -> ");
+    DEBUG_PRINT(drone->RC_INPUT.ROL);
+    DEBUG_PRINT("Input Pitch -> ");
+    DEBUG_PRINT(drone->RC_INPUT.PIT);
+    DEBUG_PRINT("Input Heading -> ");
+    DEBUG_PRINT(drone->RC_INPUT.HEAD);
+  #endif
 
   if (drone->STATUS.FAILSAFE == RC)
     Serial.print("FAILSAFE - RC ERROR\n");

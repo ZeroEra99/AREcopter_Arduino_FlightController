@@ -1,8 +1,7 @@
 #ifndef ESC_H
 #define ESC_H
 
-#include "Config.h"
-#include "drone.h"
+#include "Drone.h"
 
 // Dichiarazione delle funzioni per l'inizializzazione e la gestione delle ESC
 void setupESC(Drone *drone);    // Funzione di setup delle ESC

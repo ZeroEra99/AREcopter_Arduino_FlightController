@@ -7,7 +7,6 @@
 #define RC_INPUT_PITCH_PIN 4
 #define RC_INPUT_HEAD_PIN 8
 
-
 // Range di arm/disarm
 #define ARMING_RANGE 100
 

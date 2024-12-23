@@ -1,4 +1,6 @@
 #include "ESC.h"
+#include "Config.h"
+#include "Debug.h"
 
 // Funzione di setup delle ESC
 void setupESC(Drone *drone) {
@@ -20,10 +22,23 @@ void setupESC(Drone *drone) {
   Serial.print("ESC setup completed.\n");
 }
 
+
 // Funzione per inviare i segnali alle ESC
 void writeESC(Drone *drone) {
   drone->ESC.FRL.writeMicroseconds(drone->ESC_OUTPUT.FRL);  // Invia il segnale al motore anteriore sinistro
   drone->ESC.FRR.writeMicroseconds(drone->ESC_OUTPUT.FRR);  // Invia il segnale al motore anteriore destro
   drone->ESC.BKL.writeMicroseconds(drone->ESC_OUTPUT.BKL);  // Invia il segnale al motore posteriore sinistro
   drone->ESC.BKR.writeMicroseconds(drone->ESC_OUTPUT.BKR);  // Invia il segnale al motore posteriore destro
+
+    // Stampa i valori
+  #if ESC_DEBUG
+    DEBUG_PRINT("  Front Left ESC -> ");
+    DEBUG_PRINT(drone->ESC_OUTPUT.FRL);
+    DEBUG_PRINT("  Front Right ESC -> ");
+    DEBUG_PRINT(drone->ESC_OUTPUT.FRR);
+    DEBUG_PRINT("  Back Left ESC -> ");
+    DEBUG_PRINT(drone->ESC_OUTPUT.BKL);
+    DEBUG_PRINT("  Back Right ESC -> ");
+    DEBUG_PRINT(drone->ESC_OUTPUT.BKR);
+  #endif
 }
