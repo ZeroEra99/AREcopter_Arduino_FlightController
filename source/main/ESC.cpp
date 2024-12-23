@@ -1,0 +1,29 @@
+#include "ESC.h"
+
+// Funzione di setup delle ESC
+void setupESC(Drone *drone) {
+  Serial.print("ESC setup starting.\n");
+
+  // Impostazione dei pin delle ESC
+  drone->ESC.FRL.attach(3);
+  drone->ESC.FRR.attach(5);
+  drone->ESC.BKL.attach(6);
+  drone->ESC.BKR.attach(9);
+
+  // Impostazione iniziale delle ESC al valore minimo
+  drone->ESC.FRL.writeMicroseconds(IO_MIN);
+  drone->ESC.FRR.writeMicroseconds(IO_MIN);
+  drone->ESC.BKL.writeMicroseconds(IO_MIN);
+  drone->ESC.BKR.writeMicroseconds(IO_MIN);
+
+  // Completamento della configurazione
+  Serial.print("ESC setup completed.\n");
+}
+
+// Funzione per inviare i segnali alle ESC
+void writeESC(Drone *drone) {
+  drone->ESC.FRL.writeMicroseconds(drone->ESC_OUTPUT.FRL);  // Invia il segnale al motore anteriore sinistro
+  drone->ESC.FRR.writeMicroseconds(drone->ESC_OUTPUT.FRR);  // Invia il segnale al motore anteriore destro
+  drone->ESC.BKL.writeMicroseconds(drone->ESC_OUTPUT.BKL);  // Invia il segnale al motore posteriore sinistro
+  drone->ESC.BKR.writeMicroseconds(drone->ESC_OUTPUT.BKR);  // Invia il segnale al motore posteriore destro
+}
