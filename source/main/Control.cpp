@@ -109,6 +109,21 @@ void PID(Drone *drone, float elapsedTime) {
     DEBUG_PRINTLN(ESC_OFFSET.PIT);
   #endif
 
+  #if PID_GRAPH_DEBUG
+    // Debug grafico per PID
+    DEBUG_PRINT("PID_Roll_P:"); DEBUG_PRINT(PID_OFFSET_ROLL.P);
+    DEBUG_PRINT(",PID_Roll_I:"); DEBUG_PRINT(PID_OFFSET_ROLL.I);
+    DEBUG_PRINT(",PID_Roll_D:"); DEBUG_PRINT(PID_OFFSET_ROLL.D);
+    DEBUG_PRINT(",PID_Roll_Offset:"); DEBUG_PRINT(ESC_OFFSET.ROL);
+
+    DEBUG_PRINT(",PID_Pitch_P:"); DEBUG_PRINT(PID_OFFSET_PITCH.P);
+    DEBUG_PRINT(",PID_Pitch_I:"); DEBUG_PRINT(PID_OFFSET_PITCH.I);
+    DEBUG_PRINT(",PID_Pitch_D:"); DEBUG_PRINT(PID_OFFSET_PITCH.D);
+    DEBUG_PRINT(",PID_Pitch_Offset:"); DEBUG_PRINT(ESC_OFFSET.PIT);
+
+    DEBUG_PRINTLN();
+  #endif
+
   // Memorizza le differenze per l'uso futuro nel calcolo PID
   LAST_DIFF_INPUT.ROL = DIFF_INPUT.ROL;
   LAST_DIFF_INPUT.PIT = DIFF_INPUT.PIT;

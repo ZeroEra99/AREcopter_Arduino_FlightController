@@ -83,6 +83,14 @@ void readIMU(Drone *drone) {
     DEBUG_PRINT(drone->IMU_INPUT.HEAD);
   #endif
 
+  #if IMU_GRAPH_DEBUG
+    // Debug grafico per IMU
+    DEBUG_PRINT("IMU_Roll:"); DEBUG_PRINT(drone->IMU_INPUT.ROL);
+    DEBUG_PRINT(",IMU_Pitch:"); DEBUG_PRINT(drone->IMU_INPUT.PIT);
+    DEBUG_PRINT(",IMU_Yaw:"); DEBUG_PRINT(drone->IMU_INPUT.YAW);
+    DEBUG_PRINTLN();
+  #endif
+
   // Stampa messaggi di errore in caso di failsafe
   if (drone->STATUS.FAILSAFE == IMU)
     Serial.print("FAILSAFE - IMU ERROR\n");

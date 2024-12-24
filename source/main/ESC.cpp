@@ -30,7 +30,7 @@ void writeESC(Drone *drone) {
   drone->ESC.BKL.writeMicroseconds(drone->ESC_OUTPUT.BKL);  // Invia il segnale al motore posteriore sinistro
   drone->ESC.BKR.writeMicroseconds(drone->ESC_OUTPUT.BKR);  // Invia il segnale al motore posteriore destro
 
-    // Stampa i valori
+  // Stampa i valori
   #if ESC_DEBUG
     DEBUG_PRINT("  Front Left ESC -> ");
     DEBUG_PRINT(drone->ESC_OUTPUT.FRL);
@@ -40,5 +40,14 @@ void writeESC(Drone *drone) {
     DEBUG_PRINT(drone->ESC_OUTPUT.BKL);
     DEBUG_PRINT("  Back Right ESC -> ");
     DEBUG_PRINT(drone->ESC_OUTPUT.BKR);
+  #endif
+
+  #if ESC_GRAPH_DEBUG
+    // Debug grafico per ESC
+    DEBUG_PRINT("ESC_FrontLeft:"); DEBUG_PRINT(drone->ESC_OUTPUT.FRL);
+    DEBUG_PRINT(",ESC_FrontRight:"); DEBUG_PRINT(drone->ESC_OUTPUT.FRR);
+    DEBUG_PRINT(",ESC_BackLeft:"); DEBUG_PRINT(drone->ESC_OUTPUT.BKL);
+    DEBUG_PRINT(",ESC_BackRight:"); DEBUG_PRINT(drone->ESC_OUTPUT.BKR);
+    DEBUG_PRINTLN();
   #endif
 }

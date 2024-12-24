@@ -72,6 +72,16 @@ void readRC(Drone *drone) {
     DEBUG_PRINT(drone->RC_INPUT.HEAD);
   #endif
 
+  #if RC_GRAPH_DEBUG
+    // Debug grafico per RC
+    DEBUG_PRINT("RC_Throttle:"); DEBUG_PRINT(drone->RC_INPUT.THR);
+    DEBUG_PRINT(",RC_Roll:"); DEBUG_PRINT(drone->RC_INPUT.ROL);
+    DEBUG_PRINT(",RC_Pitch:"); DEBUG_PRINT(drone->RC_INPUT.PIT);
+    DEBUG_PRINT(",RC_Yaw:"); DEBUG_PRINT(drone->RC_INPUT.YAW);
+    DEBUG_PRINTLN();
+  #endif
+
+
   if (drone->STATUS.FAILSAFE == RC)
     Serial.print("FAILSAFE - RC ERROR\n");
 }
