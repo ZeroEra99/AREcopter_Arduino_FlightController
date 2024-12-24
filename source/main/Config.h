@@ -7,6 +7,16 @@
 #define RC_INPUT_PITCH_PIN 4
 #define RC_INPUT_HEAD_PIN 8
 
+// Pin di output ESC
+#define ESC_OUTPUT_FRL_PIN 3
+#define ESC_OUTPUT_FRR_PIN 5
+#define ESC_OUTPUT_BKL_PIN 6
+#define ESC_OUTPUT_BKR_PIN 9
+
+// Pin di output LED
+#define RED_LED_PIN 11
+#define GREEN_LED_PIN 12
+
 // Range di arm/disarm
 #define ARMING_RANGE 100
 

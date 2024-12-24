@@ -7,10 +7,10 @@ void setupESC(Drone *drone) {
   Serial.print("ESC setup starting.\n");
 
   // Impostazione dei pin delle ESC
-  drone->ESC.FRL.attach(3);
-  drone->ESC.FRR.attach(5);
-  drone->ESC.BKL.attach(6);
-  drone->ESC.BKR.attach(9);
+  drone->ESC.FRL.attach(ESC_OUTPUT_FRL_PIN);
+  drone->ESC.FRR.attach(ESC_OUTPUT_FRR_PIN);
+  drone->ESC.BKL.attach(ESC_OUTPUT_BKL_PIN);
+  drone->ESC.BKR.attach(ESC_OUTPUT_BKR_PIN);
 
   // Impostazione iniziale delle ESC al valore minimo
   drone->ESC.FRL.writeMicroseconds(IO_MIN);

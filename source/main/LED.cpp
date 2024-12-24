@@ -1,4 +1,5 @@
 #include "LED.h"
+#include "Config.h"
 
 // Funzione per accendere il LED
 void onLED(LedLight *led) {
