@@ -17,7 +17,7 @@ const pid PID_VALUE_PITCH = {
 const pid PID_VALUE_YAW = {
   .P = 0.8,
   .I = 0,
-  .D = 0.95
+  .D = 0.05
 };
 
 float time, timePrev, elapsedTime;
@@ -43,13 +43,13 @@ void PID(Drone *drone, float elapsedTime) {
   // Calcolo della parte proporzionale (P) del PID
   PID_OFFSET_ROLL.P = PID_VALUE_ROLL.P * DIFF_INPUT.ROL;
   PID_OFFSET_PITCH.P = PID_VALUE_PITCH.P * DIFF_INPUT.PIT;
-
+/*
   // Parte integrale (I) del PID
   if (-PID_INTEGRAL_ERROR < DIFF_INPUT.ROL && DIFF_INPUT.ROL < PID_INTEGRAL_ERROR)
     PID_OFFSET_ROLL.I += (PID_VALUE_ROLL.I * DIFF_INPUT.ROL);
   if (-PID_INTEGRAL_ERROR < DIFF_INPUT.PIT && DIFF_INPUT.PIT < PID_INTEGRAL_ERROR)
     PID_OFFSET_PITCH.I += (PID_VALUE_PITCH.I * DIFF_INPUT.PIT);
-
+*/
   // Calcolo della parte derivativa (D) del PID
   PID_OFFSET_ROLL.D = PID_VALUE_ROLL.D * ((DIFF_INPUT.ROL - LAST_DIFF_INPUT.ROL) / elapsedTime);
   PID_OFFSET_PITCH.D = PID_VALUE_PITCH.D * ((DIFF_INPUT.PIT - LAST_DIFF_INPUT.PIT) / elapsedTime);
@@ -87,25 +87,25 @@ void PID(Drone *drone, float elapsedTime) {
   // Stampa i valori
   #if PID_DEBUG
     // Valori calcolati per PID Roll (P, I, D)
-    DEBUG_PRINT("PID Debug - Roll P: ");
-    DEBUG_PRINTLN(PID_OFFSET_ROLL.P);
-    DEBUG_PRINT("PID Debug - Roll I: ");
-    DEBUG_PRINTLN(PID_OFFSET_ROLL.I);
-    DEBUG_PRINT("PID Debug - Roll D: ");
-    DEBUG_PRINTLN(PID_OFFSET_ROLL.D);
+    DEBUG_PRINT("PID Roll P: ");
+    DEBUG_PRINT(PID_OFFSET_ROLL.P);
+    DEBUG_PRINT("  PID Roll I: ");
+    DEBUG_PRINT(PID_OFFSET_ROLL.I);
+    DEBUG_PRINT("  PID Roll D: ");
+    DEBUG_PRINT(PID_OFFSET_ROLL.D);
 
     // Valori calcolati per PID Pitch (P, I, D)
-    DEBUG_PRINT("PID Debug - Pitch P: ");
-    DEBUG_PRINTLN(PID_OFFSET_PITCH.P);
-    DEBUG_PRINT("PID Debug - Pitch I: ");
-    DEBUG_PRINTLN(PID_OFFSET_PITCH.I);
-    DEBUG_PRINT("PID Debug - Pitch D: ");
-    DEBUG_PRINTLN(PID_OFFSET_PITCH.D);
+    DEBUG_PRINT("  PID Pitch P: ");
+    DEBUG_PRINT(PID_OFFSET_PITCH.P);
+    DEBUG_PRINT("  PID Pitch I: ");
+    DEBUG_PRINT(PID_OFFSET_PITCH.I);
+    DEBUG_PRINT("  PID Pitch D: ");
+    DEBUG_PRINT(PID_OFFSET_PITCH.D);
 
     // Offset finali per i motori
-    DEBUG_PRINT("PID Debug - ESC Roll Offset: ");
-    DEBUG_PRINTLN(ESC_OFFSET.ROL);
-    DEBUG_PRINT("PID Debug - ESC Pitch Offset: ");
+    DEBUG_PRINT("  PID ESC Roll Offset: ");
+    DEBUG_PRINT(ESC_OFFSET.ROL);
+    DEBUG_PRINT("  PID ESC Pitch Offset: ");
     DEBUG_PRINTLN(ESC_OFFSET.PIT);
   #endif
 

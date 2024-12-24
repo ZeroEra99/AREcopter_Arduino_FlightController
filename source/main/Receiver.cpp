@@ -24,7 +24,7 @@ void readRC(Drone *drone) {
   drone->RC_INPUT.HEAD = pulseIn(RC_INPUT_HEAD_PIN, HIGH, 30000);
 
   // Controllo validità
-  if (drone->RC_INPUT.THR == 0 || drone->RC_INPUT.ROL == 0 || drone->RC_INPUT.PIT == 0 || drone->RC_INPUT.HEAD == 0) {
+  if (drone->RC_INPUT.THR < 0 || drone->RC_INPUT.ROL == 0 || drone->RC_INPUT.PIT == 0 || drone->RC_INPUT.HEAD == 0) {
     Serial.print("RC input is invalid.\n");
     drone->STATUS.FAILSAFE = RC;
   }
