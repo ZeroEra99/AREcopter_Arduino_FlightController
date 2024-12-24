@@ -23,12 +23,18 @@ void setupIMU(Drone *drone) {
   // Successo
   bno.setExtCrystalUse(true);
 
+  delay(1000); // Aspetta 100 ms per la stabilizzazione della IMU
+
   // Acquisizione dell'orientamento iniziale per il calcolo dell'offset
   sensors_event_t initial_event;
   if (!bno.getEvent(&initial_event)) {
     Serial.print("IMU setup failed to read initial orientation.\n");
     while (1) ; // Se non riesce a leggere i dati iniziali, rimane in loop infinito
   }
+
+
+  Serial.print(initial_event.orientation.roll);  Serial.print(initial_event.orientation.pitch);
+  Serial.print("banana");
 
   // Calcolo dell'offset di montaggio, supponendo che il drone sia in piano
   drone->IMU_INPUT.ROL_offset = initial_event.orientation.heading;
@@ -59,19 +65,14 @@ void readIMU(Drone *drone) {
   drone->IMU_INPUT.HEAD = event.orientation.roll - drone->IMU_INPUT.HEAD_offset;
 
   // Controllo di sicurezza: Roll e Pitch fuori dai limiti
-  if (event.orientation.heading > MAX_ROLL * 2 || event.orientation.heading < -MAX_ROLL * 2) {
+  if (drone->IMU_INPUT.ROL > MAX_ROLL * 2 || drone->IMU_INPUT.ROL < -MAX_ROLL * 2) {
     drone->STATUS.FAILSAFE = HAZARD;
     Serial.print("FAILSAFE - EXCESSIVE ROLL.\n");
   }
-  if (event.orientation.pitch > MAX_PITCH * 2 || event.orientation.pitch < -MAX_PITCH * 2) {
+  if (drone->IMU_INPUT.PIT > MAX_PITCH * 2 || drone->IMU_INPUT.PIT < -MAX_PITCH * 2) {
     drone->STATUS.FAILSAFE = HAZARD;
     Serial.print("FAILSAFE - EXCESSIVE PITCH.\n");
   }
-
-  // Memorizza i dati dell'orientamento nella struttura del drone
-  drone->IMU_INPUT.ROL = event.orientation.heading;
-  drone->IMU_INPUT.PIT = event.orientation.pitch;
-  drone->IMU_INPUT.HEAD = event.orientation.roll;
 
   // Stampa i valori
   #if IMU_DEBUG

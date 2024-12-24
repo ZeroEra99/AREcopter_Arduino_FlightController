@@ -2,12 +2,12 @@
 #define DEBUG_H
 
 // Abilitare o disabilitare il debug globale
-#define DEBUG_ENABLED 0  
+#define DEBUG_ENABLED 1  
 
 // DEBUG Serial: Attiva/Disattiva stampa su Serial Monitor (Testo)
 #define RC_DEBUG     0  
 #define ESC_DEBUG    0  
-#define IMU_DEBUG    0  
+#define IMU_DEBUG    1  
 #define PID_DEBUG    0  
 // DEBUG Graph: Attiva/Disattiva stampa per Serial Plotter (Grafico)
 #define RC_GRAPH_DEBUG     0  
