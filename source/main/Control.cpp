@@ -27,11 +27,7 @@ ControlInput DIFF_INPUT;
 ControlInput LAST_DIFF_INPUT;
 
 // Funzione per il controllo PID
-void PID(Drone *drone) {
-  // Calcola il delta t (tempo trascorso)
-  timePrev = time;  // Salva il tempo precedente
-  time = millis();  // Ottieni il tempo attuale
-  elapsedTime = (time - timePrev) / 1000.0; // Calcola il tempo trascorso in secondi
+void PID(Drone *drone, float elapsedTime) {
 
   pid PID_OFFSET_ROLL;
   pid PID_OFFSET_PITCH;

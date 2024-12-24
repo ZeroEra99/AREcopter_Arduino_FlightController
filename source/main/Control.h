@@ -26,6 +26,6 @@ extern ControlInput DIFF_INPUT;
 extern ControlInput LAST_DIFF_INPUT;
 
 // Funzione per il controllo PID
-void PID(Drone *drone);
+void PID(Drone *drone, float elapsedTime);
 
 #endif // CONTROL_H

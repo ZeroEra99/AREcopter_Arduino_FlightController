@@ -38,7 +38,7 @@ void loop() {
   readRC(&drone);
 
   // Controller PID
-  PID(&drone);
+  PID(&drone, 0.01); // Passa il valore fisso di 0.01 secondi (100Hz)
 
   // Scrivi output (LED e ESC)
   writeLED(&drone);
