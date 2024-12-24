@@ -3,12 +3,6 @@
 
 #include "drone.h"
 
-// Definizioni delle costanti
-#define MAX_DIFF_INPUT_PITCH 8
-#define MAX_DIFF_INPUT_ROLL 8
-#define PID_INTEGRAL_ERROR 2
-#define MAX_OFFSET 40
-
 // Struttura del PID
 struct pid {
   float P;

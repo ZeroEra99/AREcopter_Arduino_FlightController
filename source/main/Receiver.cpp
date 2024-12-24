@@ -26,7 +26,7 @@ void readRC(Drone *drone) {
   float HEAD_PulseIn = pulseIn(RC_INPUT_HEAD_PIN, HIGH, 30000);
 
   // Controllo validità
-  if (THR_PulseIn == 0 || ROL_PulseIn == 0 || PIT_PulseIn == 0 || HEAD_PulseIn == 0) {
+  if (ROL_PulseIn == 0 || PIT_PulseIn == 0 || HEAD_PulseIn == 0) {
     Serial.print("RC input is invalid.\n");
     drone->STATUS.FAILSAFE = RC;
   }
@@ -38,6 +38,8 @@ void readRC(Drone *drone) {
       ROL_PulseIn > (IO_MAX - ARMING_RANGE)) {
     Serial.print("Drone status: armed.\n");
     drone->STATUS.isArmed = true;
+    HEAD_PulseIn = 1500;
+    delay(500);
   } else if (THR_PulseIn < (IO_MIN + ARMING_RANGE) &&
              PIT_PulseIn < (IO_MAX + ARMING_RANGE) &&
              HEAD_PulseIn > (IO_MAX - ARMING_RANGE) &&
@@ -66,11 +68,15 @@ void readRC(Drone *drone) {
   }
 
   // Assegnamento valori
+  if(drone->STATUS.isArmed){
   drone->RC_INPUT.ROL = ROL_PulseIn;
   drone->RC_INPUT.PIT = PIT_PulseIn;
-  drone->RC_INPUT.HEAD = HEAD_PulseIn;
+  drone->RC_INPUT.HEAD += HEAD_PulseIn;
   drone->RC_INPUT.THR = THR_PulseIn;
 
+  if(drone->RC_INPUT.HEAD >= 360)drone->RC_INPUT.HEAD-=360;
+  else if (drone->RC_INPUT.HEAD <=0)drone->RC_INPUT.HEAD+=360;
+  }
   // Stampa i valori
   #if RC_DEBUG
     DEBUG_PRINT("\nInput Roll -> ");
@@ -89,7 +95,6 @@ void readRC(Drone *drone) {
     DEBUG_PRINT(",RC_Head:"); DEBUG_PRINT(drone->RC_INPUT.HEAD);
     DEBUG_PRINTLN();
   #endif
-
 
   if (drone->STATUS.FAILSAFE == RC)
     Serial.print("FAILSAFE - RC ERROR\n");
