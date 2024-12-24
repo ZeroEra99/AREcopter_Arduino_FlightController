@@ -39,6 +39,7 @@ void writeESC(Drone *drone) {
     DEBUG_PRINT("  Back Left ESC -> ");
     DEBUG_PRINT(drone->ESC_OUTPUT.BKL);
     DEBUG_PRINT("  Back Right ESC -> ");
+    
     DEBUG_PRINTLN(drone->ESC_OUTPUT.BKR);
   #endif
 

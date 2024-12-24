@@ -82,6 +82,8 @@ void readIMU(Drone *drone) {
     DEBUG_PRINT(drone->IMU_INPUT.PIT);
     DEBUG_PRINT("IMU Heading -> ");
     DEBUG_PRINT(drone->IMU_INPUT.HEAD);
+
+    DEBUG_PRINTLN();
   #endif
 
   #if IMU_GRAPH_DEBUG

@@ -36,10 +36,10 @@
 // Valori massimi PID
 #define MAX_DIFF_INPUT_PITCH 8
 #define MAX_DIFF_INPUT_ROLL 8
-#define MAX_DIFF_INPUT_HEAD 20
+#define MAX_DIFF_INPUT_HEAD 40
 #define PID_INTEGRAL_ERROR 2
-#define MAX_OFFSET 40
-#define MAX_HEAD_OFFSET 40
+#define MAX_OFFSET 50
+#define MAX_HEAD_OFFSET 50
 
 // Limiti IO
 #define IO_MIN 1000
