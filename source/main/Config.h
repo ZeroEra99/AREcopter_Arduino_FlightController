@@ -21,14 +21,14 @@
 #define ARMING_RANGE 100
 
 // Soglie minime RC
-#define MIN_RC_INPUT_ROLL 0.5
-#define MIN_RC_INPUT_PITCH 0.5
-#define MIN_RC_INPUT_HEAD 1
-#define MIN_RC_INPUT_THROTTLE 15
+#define MIN_RC_INPUT_ROLL 1
+#define MIN_RC_INPUT_PITCH 1
+#define MIN_RC_INPUT_HEAD 0.5
+#define MIN_RC_INPUT_THROTTLE 20
 
 // Valori massimi RC
-#define MAX_RC_INPUT_ROLL 6
-#define MAX_RC_INPUT_PITCH 6
+#define MAX_RC_INPUT_ROLL 10
+#define MAX_RC_INPUT_PITCH 10
 #define MAX_RC_INPUT_HEAD 10
 #define MAX_RC_INPUT_THROTTLE 100
 

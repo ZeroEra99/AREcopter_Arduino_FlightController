@@ -21,8 +21,8 @@ void setup() {
   // Setup Hardware
   setupESC(&drone);
   setupLED(&drone);
-  setupRC();
   setupIMU(&drone);
+  setupRC(&drone);
 
   // Stato iniziale: completato setup
   drone.STATUS.isStarting = false;

@@ -21,9 +21,11 @@ void writeLED(Drone *drone) {
   if (drone->STATUS.isStarting) {
     onLED(&drone->greenLed); // Accendi il LED verde
     onLED(&drone->redLed);   // Accendi il LED rosso
-  } else if (drone->STATUS.isArmed) {
+  }
+  if (drone->STATUS.isArmed) {
     onLED(&drone->greenLed); // Accendi solo il LED verde
-  } else if (drone->STATUS.FAILSAFE || !drone->STATUS.isArmed) {
+  }
+  if (drone->STATUS.FAILSAFE || !drone->STATUS.isArmed) {
     onLED(&drone->redLed);   // Accendi solo il LED rosso
   }
 }

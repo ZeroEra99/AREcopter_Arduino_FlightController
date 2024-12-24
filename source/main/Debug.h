@@ -5,8 +5,8 @@
 #define DEBUG_ENABLED 1  
 
 // DEBUG Serial: Attiva/Disattiva stampa su Serial Monitor (Testo)
-#define RC_DEBUG     0  
-#define ESC_DEBUG    1  
+#define RC_DEBUG     1
+#define ESC_DEBUG    0  
 #define IMU_DEBUG    0  
 #define PID_DEBUG    0  
 // DEBUG Graph: Attiva/Disattiva stampa per Serial Plotter (Grafico)
