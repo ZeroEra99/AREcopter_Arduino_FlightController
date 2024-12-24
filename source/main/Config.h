@@ -29,6 +29,7 @@
 // Valori massimi RC
 #define MAX_RC_INPUT_ROLL 10
 #define MAX_RC_INPUT_PITCH 10
+#define MAX_RC_INPUT_2AXIS_COMBINED 10
 #define MAX_RC_INPUT_HEAD 10
 #define MAX_RC_INPUT_THROTTLE 100
 

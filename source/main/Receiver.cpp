@@ -59,9 +59,10 @@ void readRC(Drone *drone) {
   if (abs(THR_PulseIn) < MIN_RC_INPUT_THROTTLE) THR_PulseIn = 0;
 
   // Mappatura finale
-  if (hypot(ROL_PulseIn, PIT_PulseIn) > hypot(MAX_RC_INPUT_ROLL, MAX_RC_INPUT_PITCH)) {
-    ROL_PulseIn *= MAX_RC_INPUT_ROLL / hypot(ROL_PulseIn, PIT_PulseIn);
-    PIT_PulseIn *= MAX_RC_INPUT_PITCH / hypot(ROL_PulseIn, PIT_PulseIn);
+  if (hypot(ROL_PulseIn, PIT_PulseIn) > MAX_RC_INPUT_2AXIS_COMBINED) {
+      float scale_factor = MAX_RC_INPUT_2AXIS_COMBINED / hypot(ROL_PulseIn, PIT_PulseIn);
+      ROL_PulseIn *= scale_factor;
+      PIT_PulseIn *= scale_factor;
   }
 
   // Assegnamento valori
