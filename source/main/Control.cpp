@@ -6,9 +6,9 @@
 
 // Definizioni dei PID per Roll, Pitch e Heading
 const pid PID_VALUE_ROLL = {
-  .P = 0,//0.8,
+  .P = 0.13,//0.8,
   .I = 0,
-  .D = 0,//0.05
+  .D = 0.008,//0.05
 };
 const pid PID_VALUE_PITCH = {
   .P = 0,//0.8,
@@ -16,9 +16,9 @@ const pid PID_VALUE_PITCH = {
   .D = 0,//0.05
 };
 const pid PID_VALUE_HEAD = {
-  .P = 2.4,
+  .P = 0,
   .I = 0,
-  .D = 0.05
+  .D = 0
 };
 
 // Variabili per le differenze di input e l'ultimo input
@@ -37,8 +37,8 @@ void PID(Drone *drone, float elapsedTime) {
   // Normalizzazione dell'angolo di Heading
   float headingDiff = normalizeAngle(drone->RC_INPUT.HEAD - drone->IMU_INPUT.HEAD);
   // Calcola le differenze tra i valori di input della IMU e del RC (constrained)
-  DIFF_INPUT.ROL = constrain(drone->IMU_INPUT.ROL - drone->RC_INPUT.ROL, -MAX_DIFF_INPUT_ROLL, MAX_DIFF_INPUT_ROLL);
-  DIFF_INPUT.PIT = constrain(drone->IMU_INPUT.PIT - drone->RC_INPUT.PIT, -MAX_DIFF_INPUT_PITCH, MAX_DIFF_INPUT_PITCH);
+  DIFF_INPUT.ROL = drone->IMU_INPUT.ROL - drone->RC_INPUT.ROL;
+  DIFF_INPUT.PIT = drone->IMU_INPUT.PIT - drone->RC_INPUT.PIT;
   DIFF_INPUT.HEAD = constrain(headingDiff, -MAX_DIFF_INPUT_HEAD, MAX_DIFF_INPUT_HEAD);
 
   // Calcolo della parte proporzionale (P) del PID

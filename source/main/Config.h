@@ -18,13 +18,13 @@
 #define GREEN_LED_PIN 12
 
 // Range di arm/disarm
-#define ARMING_RANGE 100
+#define ARMING_RANGE 40
 
 // Soglie minime RC
-#define MIN_RC_INPUT_ROLL 1
-#define MIN_RC_INPUT_PITCH 1
-#define MIN_RC_INPUT_HEAD 0.5
-#define MIN_RC_INPUT_THROTTLE 20
+#define MIN_RC_INPUT_ROLL 0
+#define MIN_RC_INPUT_PITCH 0
+#define MIN_RC_INPUT_HEAD 0
+#define MIN_RC_INPUT_THROTTLE 8
 
 // Valori massimi RC
 #define MAX_RC_INPUT_ROLL 10
@@ -34,8 +34,6 @@
 #define MAX_RC_INPUT_THROTTLE 100
 
 // Valori massimi PID
-#define MAX_DIFF_INPUT_PITCH 8
-#define MAX_DIFF_INPUT_ROLL 8
 #define MAX_DIFF_INPUT_HEAD 40
 #define PID_INTEGRAL_ERROR 2
 #define MAX_OFFSET 50

@@ -65,7 +65,7 @@ void readIMU(Drone *drone) {
   drone->IMU_INPUT.HEAD = event.orientation.roll - drone->IMU_INPUT.HEAD_offset;
 
   // Controllo di sicurezza: Roll e Pitch fuori dai limiti
-  if (drone->IMU_INPUT.ROL > MAX_ROLL * 2 || drone->IMU_INPUT.ROL < -MAX_ROLL * 2) {
+  if (drone->IMU_INPUT.ROL > 60 || drone->IMU_INPUT.ROL < -60) {
     drone->STATUS.FAILSAFE = HAZARD;
     Serial.print("FAILSAFE - EXCESSIVE ROLL.\n");
   }

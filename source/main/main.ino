@@ -7,7 +7,7 @@
 
 Drone drone;            // Creazione di un'istanza del drone
 long loop_timer;        // Timer per il loop
-
+float frequency;
 void setup() {
   // Serial
   Serial.begin(9600);
@@ -44,8 +44,15 @@ void loop() {
   writeLED(&drone);
   writeESC(&drone);
 
-  // Delay per mantenere la frequenza di loop costante
-  while (micros() - loop_timer < 100000)
-    ;  // Aspetta fino a 100ms (100Hz)
-  loop_timer = micros(); // Reset del timer
+  // Calcola il tempo impiegato per il loop
+  long time_taken = micros() - loop_timer;
+
+  // Aspetta per completare l'intervallo di 100 ms
+  if (time_taken < 100000) {
+    delayMicroseconds(100000 - time_taken);
+  }
+
+  // Aggiorna il timer
+  loop_timer = micros();
 }
+
