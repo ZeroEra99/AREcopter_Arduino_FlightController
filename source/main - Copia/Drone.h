@@ -6,22 +6,19 @@
 
 // Struttura per i valori di input di controllo
 struct ControlInput {
-  float THROTTLE;  // Throttle
-  float ROLL;  // Roll
-  float PITCH;  // Pitch
+  float THR;  // Throttle
+  float ROL;  // Roll
+  float PIT;  // Pitch
   float HEAD; // Heading/Yaw
 };
 
 // Struttura per i valori di input IMU
 struct IMUInput {
-  float ROLL;  // Roll
-  float PITCH;  // Pitch
+  float ROL;  // Roll
+  float PIT;  // Pitch
   float HEAD; // Heading/Yaw
-  float ROLL_RATE; // Roll angular velocity
-  float PITCH_RATE; // Pitch angular velocity
-  float HEAD_RATE; // Heading angular velocity
-  float ROLL_offset; // Offset Roll
-  float PITCH_offset; // Offset Pitch
+  float ROL_offset; // Offset Roll
+  float PIT_offset; // Offset Pitch
   float HEAD_offset; // Offset Heading
 };
 
@@ -59,7 +56,6 @@ enum FailSafe {
 struct DroneStatus {
   bool isArmed;      // Stato armato/disarmato
   bool isStarting;   // Stato setup
-  bool imuCalibrated;// Stato IMU
   FailSafe FAILSAFE; // Stato failsafe attivo
 };
 

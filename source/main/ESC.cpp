@@ -13,10 +13,10 @@ void setupESC(Drone *drone) {
   drone->ESC.BKR.attach(ESC_OUTPUT_BKR_PIN);
 
   // Impostazione iniziale delle ESC al valore minimo
-  drone->ESC.FRL.writeMicroseconds(IO_MIN);
-  drone->ESC.FRR.writeMicroseconds(IO_MIN);
-  drone->ESC.BKL.writeMicroseconds(IO_MIN);
-  drone->ESC.BKR.writeMicroseconds(IO_MIN);
+  drone->ESC.FRL.writeMicroseconds(PWM_MIN);
+  drone->ESC.FRR.writeMicroseconds(PWM_MIN);
+  drone->ESC.BKL.writeMicroseconds(PWM_MIN);
+  drone->ESC.BKR.writeMicroseconds(PWM_MIN);
 
   // Completamento della configurazione
   Serial.print("ESC setup completed.\n");
@@ -25,30 +25,40 @@ void setupESC(Drone *drone) {
 
 // Funzione per inviare i segnali alle ESC
 void writeESC(Drone *drone) {
+  // Controllo failsafe/shutdown
+  if (!drone->STATUS.isArmed || drone->STATUS.FAILSAFE != NONE) {
+    drone->ESC_OUTPUT.FRL = PWM_MIN;
+    drone->ESC_OUTPUT.FRR = PWM_MIN;
+    drone->ESC_OUTPUT.BKL = PWM_MIN;
+    drone->ESC_OUTPUT.BKR = PWM_MIN;
+  }
   drone->ESC.FRL.writeMicroseconds(drone->ESC_OUTPUT.FRL);  // Invia il segnale al motore anteriore sinistro
   drone->ESC.FRR.writeMicroseconds(drone->ESC_OUTPUT.FRR);  // Invia il segnale al motore anteriore destro
   drone->ESC.BKL.writeMicroseconds(drone->ESC_OUTPUT.BKL);  // Invia il segnale al motore posteriore sinistro
   drone->ESC.BKR.writeMicroseconds(drone->ESC_OUTPUT.BKR);  // Invia il segnale al motore posteriore destro
 
-  // Stampa i valori
-  #if ESC_DEBUG
-    DEBUG_PRINT("  Front Left ESC -> ");
-    DEBUG_PRINT(drone->ESC_OUTPUT.FRL);
-    DEBUG_PRINT("  Front Right ESC -> ");
-    DEBUG_PRINT(drone->ESC_OUTPUT.FRR);
-    DEBUG_PRINT("  Back Left ESC -> ");
-    DEBUG_PRINT(drone->ESC_OUTPUT.BKL);
-    DEBUG_PRINT("  Back Right ESC -> ");
-    
-    DEBUG_PRINTLN(drone->ESC_OUTPUT.BKR);
-  #endif
+// Stampa i valori
+#if ESC_DEBUG
+  DEBUG_PRINT("  Front Left ESC -> ");
+  DEBUG_PRINT(drone->ESC_OUTPUT.FRL);
+  DEBUG_PRINT("  Front Right ESC -> ");
+  DEBUG_PRINT(drone->ESC_OUTPUT.FRR);
+  DEBUG_PRINT("  Back Left ESC -> ");
+  DEBUG_PRINT(drone->ESC_OUTPUT.BKL);
+  DEBUG_PRINT("  Back Right ESC -> ");
+  DEBUG_PRINT(drone->ESC_OUTPUT.BKR);
+#endif
 
-  #if ESC_GRAPH_DEBUG
-    // Debug grafico per ESC
-    DEBUG_PRINT("ESC_FrontLeft:"); DEBUG_PRINT(drone->ESC_OUTPUT.FRL);
-    DEBUG_PRINT(",ESC_FrontRight:"); DEBUG_PRINT(drone->ESC_OUTPUT.FRR);
-    DEBUG_PRINT(",ESC_BackLeft:"); DEBUG_PRINT(drone->ESC_OUTPUT.BKL);
-    DEBUG_PRINT(",ESC_BackRight:"); DEBUG_PRINT(drone->ESC_OUTPUT.BKR);
-    DEBUG_PRINTLN();
-  #endif
+#if ESC_GRAPH_DEBUG
+  // Debug grafico per ESC
+  DEBUG_PRINT("ESC_FrontLeft:");
+  DEBUG_PRINT(drone->ESC_OUTPUT.FRL);
+  DEBUG_PRINT(",ESC_FrontRight:");
+  DEBUG_PRINT(drone->ESC_OUTPUT.FRR);
+  DEBUG_PRINT(",ESC_BackLeft:");
+  DEBUG_PRINT(drone->ESC_OUTPUT.BKL);
+  DEBUG_PRINT(",ESC_BackRight:");
+  DEBUG_PRINT(drone->ESC_OUTPUT.BKR);
+  DEBUG_PRINTLN();
+#endif
 }
