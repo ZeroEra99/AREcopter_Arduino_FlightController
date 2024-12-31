@@ -11,9 +11,9 @@ private:
 
 public:
   BNO055();
-  void bno055_setup();
-  void bno055_calibrate();
-  FlightData bno055_read(int flightData);
+  void setup();
+  void calibrate();
+  FlightData read(int flightData);
 };
 
 #endif // BNO055_H

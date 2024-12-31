@@ -9,7 +9,7 @@ BNO055::BNO055()
 {
 }
 
-void BNO055::bno055_setup()
+void BNO055::setup()
 {
   // Configurazione della IMU
   Serial.print("IMU setup starting.\n");
@@ -22,12 +22,12 @@ void BNO055::bno055_setup()
   Serial.print("IMU setup complete.\n");
 }
 
-void BNO055::bno055_calibrate()
+void BNO055::calibrate()
 {
   // Calibrate IMU sensor
 }
 
-FlightData BNO055::bno055_read(int flightData)
+FlightData BNO055::read(int flightData)
 {
   // Leggi i dati di volo (angolo o giroscopio)
   switch (flightData)

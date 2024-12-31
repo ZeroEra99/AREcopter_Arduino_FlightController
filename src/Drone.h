@@ -5,7 +5,7 @@
 #include "ESC.h"
 #include "BNO055.h"
 #include "led.h"
-#include "PIDcontrol.h"
+#include "FlightController.h"
 
 // Costruttore della classe Drone
 class Drone
@@ -25,15 +25,10 @@ private:
   PilotData pilotData;        // Dati del pilota (input del pilota)
   ControlDataType pilotInput; // Comando del pilota (START, STOP, ecc.)
 
-  // Controllo del volo con PID
-  PIDControl pidPitchAngle = PIDControl(KP_ROLL_ANGLE, KI_ROLL_ANGLE, KD_ROLL_ANGLE, MAX_INTEGRAL);
-  PIDControl pidRollAngle = PIDControl(KP_ROLL_ANGLE, KI_ROLL_ANGLE, KD_ROLL_ANGLE, MAX_INTEGRAL);
-  PIDControl pidYawAngle = PIDControl(KP_YAW_ANGLE, KI_YAW_ANGLE, KD_YAW_ANGLE, MAX_INTEGRAL);
-  PIDControl pidPitchGyro = PIDControl(KP_ROLL_GYRO, KI_ROLL_GYRO, KD_ROLL_GYRO, MAX_INTEGRAL);
-  PIDControl pidRollGyro = PIDControl(KP_ROLL_GYRO, KI_ROLL_GYRO, KD_ROLL_GYRO, MAX_INTEGRAL);
-  PIDControl pidYawGyro = PIDControl(KP_YAW_GYRO, KI_YAW_GYRO, KD_YAW_GYRO, MAX_INTEGRAL);
+  // Oggetto per il controllo del volo
+  FlightController flightController; // Controller di volo
 
-  FlightData pidOffset; // Offset PID (correzioni applicate ai dati)
+  // Controllo del volo con PID
   ESCData escData;      // Output degli ESC (per i vari motori)
 
 public:
@@ -59,9 +54,8 @@ public:
   void manageLEDs(); // Gestisce i LED in base allo stato del sistema
   void updateLEDs(); // Aggiorna lo stato dei LED
 
-  // Funzioni per il calcolo dei dati di volo e degli output
-  void computeFlightData(); // Calcola gli offset PID in base ai dati di volo
-  void computeOutput();     // Calcola gli output per i motori (applica gli offset PID)
+  // Funzioni per calcolare i valori degli ESC in base ai dati di volo
+  void computeOutput(); 
 
   // Applica gli output ai motori (ESC)
   void updateMotors(); 

@@ -19,7 +19,6 @@ Drone::Drone()
   pilotData = {0, 0, 0, 0};
   pilotInput = NONE;
 
-  pidOffset = {0, 0, 0};
   escData = {0, 0, 0, 0};
 }
 
@@ -31,7 +30,7 @@ void Drone::setup()
     motors[i].setup(); // Inizializza ogni ESC
   }
   receiver.setup();   // Inizializza il ricevitore
-  imu.bno055_setup(); // Inizializza l'IMU
+  imu.setup(); // Inizializza l'IMU
   ledRed.setup();     // Inizializza LED rosso
   ledGreen.setup();   // Inizializza LED verde
 }
@@ -55,8 +54,8 @@ void Drone::failsafe()
 // Funzione per ottenere i dati di volo (IMU)
 void Drone::getFlightData()
 {
-  angleData = imu.bno055_read(ANGLE); // Ottiene i dati di orientamento
-  gyroData = imu.bno055_read(GYRO);   // Ottiene i dati del giroscopio
+  angleData = imu.read(ANGLE); // Ottiene i dati di orientamento
+  gyroData = imu.read(GYRO);   // Ottiene i dati del giroscopio
 }
 
 // Funzione per ottenere i dati del pilota (ricevitore)
@@ -147,7 +146,7 @@ void Drone::evaluatePilotCommands()
     if (pilotInput == START_INPUT)
     {
       delay(2000); // Attendi 2 secondi sennò al ciclo successivo passerà da disarmed a armed senza l'intenzione del pilota. Andrà introdotto un counter
-      disarm(); 
+      disarm();
       Serial.print("Clearing failsafe...\n");
     }
     break;
@@ -155,7 +154,7 @@ void Drone::evaluatePilotCommands()
     if (pilotInput == STOP_INPUT)
     {
       Serial.print("Disarming...\n");
-      disarm(); 
+      disarm();
     }
     break;
   }
@@ -168,7 +167,7 @@ void Drone::evaluateState()
   {
   case STARTING:
     // Procedura di avvio
-    delay(2000);  // Attendi 2 secondi -> Andrà resta non bloccante
+    delay(2000);   // Attendi 2 secondi -> Andrà resta non bloccante
     state = ARMED; // Passa allo stato ARMED
     break;
   case FAILSAFE:
@@ -207,53 +206,31 @@ void Drone::manageLEDs()
 // Funzione per aggiornare i LED
 void Drone::updateLEDs()
 {
-  ledRed.update();   
+  ledRed.update();
   ledGreen.update();
 }
 
-// Funzione per calcolare gli offset PID
-void Drone::computeFlightData()
-{
-  static unsigned long tPrev = 0;   // Tempo dell'ultimo ciclo
-  unsigned long t = millis();       // Ottieni il tempo corrente
-  double dt = (t - tPrev) / 1000.0; // Calcola il tempo trascorso in secondi
-  tPrev = t;                        
-
-  FlightData angleError;
-  angleError.pitch = angleData.pitch - pilotData.pilotFlightData.pitch;
-  angleError.roll = angleData.roll - pilotData.pilotFlightData.roll;
-  angleError.yaw = angleData.yaw - pilotData.pilotFlightData.yaw;
-  FlightData gyroError;
-  // PID di primo livello per l'angolo
-  gyroError.pitch = pidPitchAngle.pid(angleError.pitch, dt) - gyroData.pitch;
-  gyroError.roll = pidRollAngle.pid(angleError.roll, dt) - gyroData.roll;
-  gyroError.yaw = pidYawAngle.pid(angleError.yaw, dt) - gyroData.yaw;
-  // PID di secondo livello per il giroscopio (Calcolato con l'ooutput del PID di primo livello)
-  pidOffset.pitch = pidPitchGyro.pid(gyroError.pitch, dt);
-  pidOffset.roll = pidRollGyro.pid(gyroError.roll, dt);
-  pidOffset.yaw = pidYawGyro.pid(gyroError.yaw, dt);
-}
-
-// Funzione per calcolare l'output dei motori
+// Funzione per calcolare i valori degli ESC in base ai dati di volo
 void Drone::computeOutput()
 {
   if (state != ARMED)
   {
-    escData = {0, 0, 0, 0}; // Se non è ARMATO, spegni i motori
+    escData = {ESC_PWM_MIN, ESC_PWM_MIN, ESC_PWM_MIN, ESC_PWM_MIN};
     return;
   }
-  // Calcola gli offset per i motori
-  ESCData escOffset;
-  escOffset.frl = (pidOffset.pitch - pidOffset.roll - pidOffset.yaw) * pilotData.pilotFlightData.throttle * 0.01;
-  escOffset.frr = (pidOffset.pitch + pidOffset.roll + pidOffset.yaw) * pilotData.pilotFlightData.throttle * 0.01;
-  escOffset.rrl = (-pidOffset.pitch - pidOffset.roll + pidOffset.yaw) * pilotData.pilotFlightData.throttle * 0.01;
-  escOffset.rrr = (-pidOffset.pitch + pidOffset.roll - pidOffset.yaw) * pilotData.pilotFlightData.throttle * 0.01;
 
-  // Aggiungi l'offset al valore di throttle
-  escData.frl = pilotData.pilotFlightData.throttle + escOffset.frl;
-  escData.frr = pilotData.pilotFlightData.throttle + escOffset.frr;
-  escData.rrl = pilotData.pilotFlightData.throttle + escOffset.rrl;
-  escData.rrr = pilotData.pilotFlightData.throttle + escOffset.rrr;
+  FlightData pidOffset = flightController.computeData(angleData, gyroData, pilotData.pilotFlightData);
+
+  ESCData escDataTemp;
+  escDataTemp.frl = pilotData.pilotFlightData.throttle + (pidOffset.pitch - pidOffset.roll - pidOffset.yaw) * pilotData.pilotFlightData.throttle * 0.01;
+  escDataTemp.frr = pilotData.pilotFlightData.throttle + (pidOffset.pitch + pidOffset.roll + pidOffset.yaw) * pilotData.pilotFlightData.throttle * 0.01;
+  escDataTemp.rrl = pilotData.pilotFlightData.throttle + (-pidOffset.pitch - pidOffset.roll + pidOffset.yaw) * pilotData.pilotFlightData.throttle * 0.01;
+  escDataTemp.rrr = pilotData.pilotFlightData.throttle + (-pidOffset.pitch + pidOffset.roll - pidOffset.yaw) * pilotData.pilotFlightData.throttle * 0.01;
+
+  escData.frl = digital_to_pwm(escDataTemp.frl, MIN_THROTTLE, MAX_THROTTLE, ESC_PWM_MIN, ESC_PWM_MAX);
+  escData.frr = digital_to_pwm(escDataTemp.frr, MIN_THROTTLE, MAX_THROTTLE, ESC_PWM_MIN, ESC_PWM_MAX);
+  escData.rrl = digital_to_pwm(escDataTemp.rrl, MIN_THROTTLE, MAX_THROTTLE, ESC_PWM_MIN, ESC_PWM_MAX);
+  escData.rrr = digital_to_pwm(escDataTemp.rrr, MIN_THROTTLE, MAX_THROTTLE, ESC_PWM_MIN, ESC_PWM_MAX);
 }
 
 // Funzione per aggiornare i motori

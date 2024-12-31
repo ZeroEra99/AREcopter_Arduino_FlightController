@@ -22,8 +22,6 @@ void loop()
     drone.manageLEDs();
     drone.updateLEDs(); // Aggiorna i LED
 
-    drone.computeFlightData(); // Calcola i dati di volo
-    drone.computeOutput();     // Calcola l'output
-
+    drone.computeOutput(); // Calcola i valori degli ESC
     drone.updateMotors(); // Aggiorna i motori
 }
