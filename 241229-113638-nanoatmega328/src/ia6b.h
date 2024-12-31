@@ -14,12 +14,11 @@ private:
     AnalogData pin;
     int pulse_min, pulse_max;
     AnalogData offset;
-    
 
     AnalogData raw_data;
-    DigitalData flightData;
+    flightInput flightData;
     ControlData controlData;
-    
+
     int cycleCounter;
     bool calibration;
     bool readPitchNext;

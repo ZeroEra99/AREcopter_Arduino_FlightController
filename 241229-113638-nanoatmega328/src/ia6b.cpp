@@ -6,7 +6,7 @@ bool ia6b_data_error = false;
 PWM pwm_throttle;
 PWM pwm_roll;
 int last_pitch, last_yaw;
-DigitalData digitalDataError = {INVALID, INVALID, INVALID, INVALID};
+flightInput pilotDataError = {INVALID, INVALID, INVALID, INVALID};
 
 IA6B::IA6B(AnalogData pin, int pulse_min, int pulse_max) : pin(pin), pulse_min(pulse_min), pulse_max(pulse_max)
 {
@@ -168,7 +168,7 @@ PilotData IA6B::getData()
   else
   {
     PilotData errorData;
-    errorData.pilotFlightData = digitalDataError;
+    errorData.pilotFlightData = pilotDataError;
     return errorData;
   }
 }

@@ -3,7 +3,7 @@
 
 #include "CONFIG.h"
 
-// Struttura per i dati analogici del ricevitore e attuatori (Throttle, Pitch, Roll, Yaw)
+// Struttura per i dati analogici del ricevitore e attuatori
 struct AnalogData
 {
   int throttle; // PWM del motore
@@ -12,8 +12,16 @@ struct AnalogData
   int yaw;      // PWM del servo yaw
 };
 
-// Struttura per i dati digitali del ricevitore e attuatori (Throttle, Pitch, Roll, Yaw)
-struct DigitalData
+// Struttura per i dati di orientamento del volo
+struct FlightData
+{
+  double pitch; // Angolo pitch
+  double roll;  // Angolo roll
+  double yaw;   // Angolo yaw
+};
+
+// Struttura per i dati digitali del ricevitore e attuatori
+struct flightInput
 {
   double throttle; // Valore digitale del motore
   double pitch;    // Valore digitale del servo pitch
@@ -21,14 +29,7 @@ struct DigitalData
   double yaw;      // Valore digitale del servo yaw
 };
 
-// Struttura per i dati di volo (Pitch, Roll, Yaw)
-struct FlightData
-{
-  double pitch; // Dati di orientamento pitch
-  double roll;  // Dati di orientamento roll
-  double yaw;   // Dati di orientamento yaw
-};
-
+// Posizione degli stick (top, bottom, left, right)
 struct StickPosition
 {
   bool top;
@@ -37,19 +38,21 @@ struct StickPosition
   bool right;
 };
 
+// Struttura per i dati di controllo degli stick
 struct ControlData
 {
   StickPosition leftStick;
   StickPosition rightStick;
 };
 
+// Dati del pilota: input di volo e dati di controllo
 struct PilotData
 {
-  DigitalData pilotFlightData;
+  flightInput pilotFlightData;
   ControlData pilotControlData;
 };
 
-// Struttura per i parametri PID (kP, kI, kD)
+// Parametri PID per i controlli
 struct PIDParameters
 {
   double kP; // Coefficiente proporzionale
@@ -57,8 +60,17 @@ struct PIDParameters
   double kD; // Coefficiente derivativo
 };
 
-// Enumerazione per i vari output (Throttle, Pitch, Roll, Yaw)
-enum OutputChannel
+// Dati degli ESC
+struct ESCData
+{
+  float frl; // Front Left ESC
+  float frr; // Front Right ESC
+  float rrl; // Rear Left ESC
+  float rrr; // Rear Right ESC
+};
+
+// Canali di input (Throttle, Pitch, Roll, Yaw)
+enum InputChannel
 {
   THROTTLE = 0,
   PITCH,
@@ -66,7 +78,7 @@ enum OutputChannel
   YAW
 };
 
-// Enumerazione per i vari output (Front Left, Front Right, Rear Left, Rear Right)
+// Canali dei motori (Front Left, Front Right, Rear Left, Rear Right)
 enum MotorChannel
 {
   FRL = 0,
@@ -75,7 +87,7 @@ enum MotorChannel
   RRR
 };
 
-// Enumerazione per gli stati del sistema
+// Stati del sistema
 enum SystemState
 {
   STARTING = -2,
@@ -84,13 +96,14 @@ enum SystemState
   ARMED
 };
 
-// Enumerazione per i dati di volo (angle,gyro)
+// Tipi di dati di volo (angolo, giroscopio)
 enum FlightDataType
 {
   ANGLE = 0,
   GYRO
 };
 
+// Tipi di dati di controllo
 enum ControlDataType
 {
   ERROR = -INVALID,
@@ -99,7 +112,7 @@ enum ControlDataType
   START_INPUT = 1
 };
 
-// Enumerazione per i colori dei LED
+// Colori dei LED
 enum LEDColor
 {
   RED = 0,
