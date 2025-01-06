@@ -23,7 +23,7 @@ FlightData FlightController::computeData(FlightData angle, FlightData gyro, flig
     angleError.roll = angle.roll - pilotData.roll;
     angleError.yaw = angle.yaw - pilotData.yaw;
     FlightData gyroError;
-    // PID di primo livello per l'angolo
+    // PID di primo livello per l'angolo-
     gyroError.pitch = pidPitchAngle.pid(angleError.pitch, dt) - gyro.pitch;
     gyroError.roll = pidRollAngle.pid(angleError.roll, dt) - gyro.roll;
     gyroError.yaw = pidYawAngle.pid(angleError.yaw, dt) - gyro.yaw;

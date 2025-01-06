@@ -9,10 +9,10 @@
 #define IA6B_PIN_ROLL 2
 #define IA6B_PIN_YAW 8
 
-#define ESC_PIN_FRL 10
-#define ESC_PIN_FRR 5
-#define ESC_PIN_RRL 6
-#define ESC_PIN_RRR 9
+#define ESC_PIN_FRL 5
+#define ESC_PIN_FRR 6
+#define ESC_PIN_RRL 9
+#define ESC_PIN_RRR 10
 
 #define LED_PIN_RED 11
 #define LED_PIN_GREEN 12

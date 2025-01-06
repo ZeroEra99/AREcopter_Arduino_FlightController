@@ -6,7 +6,9 @@ bool ia6b_data_error = false;
 PWM pwm_throttle;
 PWM pwm_roll;
 int last_pitch, last_yaw;
+
 flightInput pilotDataError = {INVALID, INVALID, INVALID, INVALID};
+PilotData pilotDataError2 = {pilotDataError, {INVALID, INVALID}};
 
 IA6B::IA6B(AnalogData pin, int pulse_min, int pulse_max) : pin(pin), pulse_min(pulse_min), pulse_max(pulse_max)
 {
@@ -17,6 +19,9 @@ IA6B::IA6B(AnalogData pin, int pulse_min, int pulse_max) : pin(pin), pulse_min(p
   offset = {0, 0, 0, 0};
   pwm_throttle.attach(pin.throttle);
   pwm_roll.attach(pin.roll);
+  ia6b_data_error = false;
+  IA6B::controlData = {StickPosition(), StickPosition()};
+  IA6B::readPitchNext = true;
 }
 
 void IA6B::setup()
@@ -136,8 +141,6 @@ void IA6B::getSticksPosition()
   // Controlla se i valori sono compresi tra i valori di ARM_TOLERANCE
   if (isInRange(flightData.throttle, IA6B_PWM_MIN, IA6B_PWM_MIN + IA6B_PWM_MAX * ARM_TOLERANCE * 0.01))
     leftStick.bottom = true;
-  if (isInRange(flightData.throttle, IA6B_PWM_MAX, IA6B_PWM_MAX - IA6B_PWM_MAX * ARM_TOLERANCE * 0.01))
-    leftStick.top = true;
   if (isInRange(flightData.yaw, IA6B_PWM_MIN, IA6B_PWM_MIN + IA6B_PWM_MAX * ARM_TOLERANCE * 0.01))
     leftStick.left = true;
   if (isInRange(flightData.yaw, IA6B_PWM_MAX, IA6B_PWM_MAX - IA6B_PWM_MAX * ARM_TOLERANCE * 0.01))
@@ -167,8 +170,6 @@ PilotData IA6B::getData()
   }
   else
   {
-    PilotData errorData;
-    errorData.pilotFlightData = pilotDataError;
-    return errorData;
+    return pilotDataError2;
   }
 }

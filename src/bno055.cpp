@@ -7,6 +7,9 @@ FlightData flightDataError = {INVALID, INVALID, INVALID};
 
 BNO055::BNO055()
 {
+  angle = {0};
+  gyro = {0};
+  
 }
 
 void BNO055::setup()

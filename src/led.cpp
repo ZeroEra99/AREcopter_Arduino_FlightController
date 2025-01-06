@@ -27,7 +27,8 @@ void LED::setup()
 void LED::setState(bool desiredState)
 {
     blinkState = false;
-    state != desiredState ? state = desiredState : state = state;
+    if (state != desiredState)
+        state = desiredState;
 }
 
 void LED::setState(int on, int off)
